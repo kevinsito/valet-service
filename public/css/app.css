@@ -7,7 +7,8 @@ body {
   width: 100%;
   display: table;
   font-weight: 100;
-  font-family: 'Lato'; }
+  font-family: 'Lato';
+  font-size: 16px; }
 
 .container {
   text-align: center;
@@ -15,7 +16,8 @@ body {
 
 .content {
   text-align: center;
-  display: inline-block; }
+  display: inline-block;
+  font-style: bold; }
 
 .title {
   font-size: 96px; }
