@@ -16,6 +16,7 @@ class CreateCarsTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned()->index();
             $table->integer('lot_id')->unsigned()->index();
+            $table->string('size');
             $table->string('location');
             $table->integer('duration')->unsigned();
             $table->decimal('charge', 5, 2)->unsigned();

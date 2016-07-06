@@ -20,7 +20,7 @@ class CreateUsersTable extends Migration
             $table->integer('age')->unsigned();
             $table->integer('times_parked')->unsigned();
             $table->integer('total_duration')->unsigned();
-            $table->integer('avrg_duration')->unsigned();
+            $table->integer('avg_duration')->unsigned();
             $table->decimal('total_charged', 5, 2)->unsigned();
             $table->timestamps();
         });

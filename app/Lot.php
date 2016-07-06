@@ -14,7 +14,4 @@ class Lot extends Model
     	return $this->hasMany(Car::class);
     }
 
-    public function lots_revenue() {
-    	return $this->hasOne(LotRev::class);
-    }
 }

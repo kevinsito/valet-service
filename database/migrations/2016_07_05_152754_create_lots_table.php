@@ -19,6 +19,11 @@ class CreateLotsTable extends Migration
             $table->integer('rem_med')->unsigned();
             $table->integer('rem_lrg')->unsigned();
             $table->integer('rem_super')->unsigned();
+            $table->decimal('total_small', 5, 2)->unsigned();
+            $table->decimal('total_med', 5, 2)->unsigned();
+            $table->decimal('total_lrg', 5, 2)->unsigned();
+            $table->decimal('total_super', 5, 2)->unsigned();
+            $table->decimal('total', 5, 2)->unsigned();
             $table->timestamps();
         });
     }
