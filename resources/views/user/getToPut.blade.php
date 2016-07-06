@@ -5,9 +5,9 @@
         <div class="content">
             <a class="title" href="/">Sito @ SoapBox</a>
 
-            <h1> GET: /api/v1/user/{user_id} </h1>
+            <h1> PUT: /api/v1/user/{user_id} </h1>
 
-            <form method="GET" action="/api/v1/user/user_id">
+            <form method="GET" action="/api/v1/pUser/user_id">
                 <div class="form-group">
                     <label for="user_id">User Id:</label>
                     <input type="text" class="form-control" name="user_id" id="user_id">
