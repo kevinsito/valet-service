@@ -1,9 +1,9 @@
  @extends('layout')
 
  @section('content')
-    <h1> GET: /api/v1/cars/{lot_id} </h1>
+    <h1> DELETE: /api/v1/lot/{lot_id} </h1>
 
-    <form method="GET" action="/api/v1/cars/lot/lot_id">
+    <form method="GET" action="/api/v1/lot/all">
         <div class="form-group">
             <label for="lot_id">Lot Id:</label>
             <input type="text" class="form-control" name="lot_id" id="lot_id">

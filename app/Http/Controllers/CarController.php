@@ -11,6 +11,15 @@ use App\User;
 
 class CarController extends Controller
 {
+	public function get() {
+    	$cars = Car::all();
+
+	    return response()->json([
+	            'cars' => $cars,
+	            'status_code' => 200
+	        ]);
+    }
+
 	public function getById() {
 		$c_id = $_GET["car_id"];
 		$car = Car::find($c_id);
@@ -92,6 +101,44 @@ class CarController extends Controller
 		else {
 			return response()->json([
 					'error' => ['message' => 'No car found with specified size'],
+		            'status_code' => 400
+		        ]);
+		}
+    }
+
+    public function create() {
+    	$req = request()->all();
+    	
+    	$car = new Car([
+    		'user_id' => $req['user_id'],
+    		'lot_id' => $req['lot_id'],
+    		'size' => $req['size'],
+    		'name' => $req['name'],
+    		'colour' => $req['colour'],
+    		'location' => $req['location'],
+    		'duration' => 0,
+    		'charge' => 0,
+    		]);
+    	$car->save();
+    	
+    	return redirect()->action('CarController@get');
+    }
+
+    public function delete() {
+    	$c_id = $_GET["car_id"];
+    	$car = Car::find($c_id);
+
+    	if($car) {
+    		$car->delete();
+
+    		return response()->json([
+		            'message' => 'Success',
+		            'status_code' => 200
+		        ]);
+		}
+		else {
+			return response()->json([
+					'error' => ['message' => 'No car found with specified Id'],
 		            'status_code' => 400
 		        ]);
 		}

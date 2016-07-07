@@ -9,6 +9,11 @@
 
     </head>
     <body>
-	   @yield('content')
+    	<div class="container">
+	    	<div class="content">
+		        <a class="title" href="/">Sito @ SoapBox</a>
+		   		@yield('content')
+			</div>
+		</div>
     </body>
 </html>

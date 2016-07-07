@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Car extends Model
 {
     protected $fillable = [
-        'location',
+        'user_id', 'lot_id', 'size', 'name', 'colour', 'location', 'duration', 'charge',
     ];
 
     public function lot() {
