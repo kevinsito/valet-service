@@ -106,6 +106,21 @@ class CarController extends Controller
 		}
     }
 
+    public function getByIdToPost() {
+    	$c_id = $_GET["car_id"];
+    	$car = Car::find($c_id);
+
+    	if(!empty($car)) {
+		    return view('car.put', compact('car'));
+		}
+		else {
+			return response()->json([
+					'error' => ['message' => 'No car found with specified Id'],
+		            'status_code' => 400
+		        ]);
+		}
+    }
+
     public function create() {
     	$req = request()->all();
     	
@@ -142,5 +157,22 @@ class CarController extends Controller
 		            'status_code' => 400
 		        ]);
 		}
+    }
+
+    public function update(Car $car) {
+    	$req = request()->all();
+
+    	$car->update([
+    		'user_id' => $req['user_id'],
+    		'lot_id' => $req['lot_id'],
+    		'size' => $req['size'],
+    		'name' => $req['name'],
+    		'colour' => $req['colour'],
+    		'location' => $req['location'],
+    		'duration' => $req['duration'],
+    		'charge' => $req['charge'],
+    		]);
+    	
+    	return redirect()->action('CarController@get');
     }
 }

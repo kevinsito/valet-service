@@ -4,6 +4,10 @@
     <h1> Here are the valet-service API routes: </h1>
     <ul class="list-group">
         <div>
+            <h3> VALET: </h3>
+            <a href="/api/v1/enter" class="list-group-item"> /api/v1/enter </a>
+        </div>
+        <div>
             <h3> GET: </h3>
             <a href="/api/v1/users" class="list-group-item"> /api/v1/users </a>
             <a href="/api/v1/user/" class="list-group-item"> /api/v1/user/{user_id} </a>
@@ -27,6 +31,7 @@
             <h3> PUT: </h3>
             <a href="/api/v1/pUser" class="list-group-item"> /api/v1/user/{user_id} </a>
             <a href="/api/v1/pLot" class="list-group-item"> /api/v1/lot/{lot_id} </a>
+            <a href="/api/v1/pCar" class="list-group-item"> /api/v1/lot/{car_id} </a>
         </div>
 
         <div>

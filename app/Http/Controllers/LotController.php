@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Lot;
+use App\Car;
 
 define("SMALL", 0.1);
 define("MED", 0.45);
@@ -115,5 +116,56 @@ class LotController extends Controller
     		]);
     	
     	return redirect()->action('LotController@get');
+    }
+
+    public function enter() {
+        $l_id = $_GET["lot_id"];
+        $c_id = $_GET["car_id"];
+
+        $lot = Lot::find($l_id);
+        $car = Car::find($c_id);
+
+        if(!empty($lot) && !empty($car)) {
+            $size = $car->size;
+
+            switch ($size) {
+                case "small":
+                    $remaining = $lot->rem_small;
+                    break;
+                case "medium":
+                    $remaining = $lot->rem_med;
+                    break;
+                case "large":
+                    $remaining = $lot->rem_lrg;
+                    break;
+                case "super":
+                    $remaining = $lot->rem_super;
+                    break;
+                default:
+                    $remaining = 0;
+            }
+
+            if($remaining > 0) {
+                $car->location = "AA";
+                $car->save();
+
+                return response()->json([
+                    'location' => $car->location,
+                    'status_code' => 200
+                ]);
+            }
+            else {
+                return response()->json([
+                    'message' => 'No more remaining spots! Please try another lot.',
+                    'status_code' => 200
+                ]);
+            }
+        }
+        else {
+            return response()->json([
+                    'error' => ['message' => 'No lot or car found with specified Id'],
+                    'status_code' => 400
+                ]);
+        }
     }
 }

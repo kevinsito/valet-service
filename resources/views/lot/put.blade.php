@@ -10,15 +10,7 @@
         <div class="form-group">
             <label for="total_spots">Total Spots:</label>
             <input type="text" class="form-control" name="total_spots" id="total_spots" value="{{ $lot->total_spots }}">
-            <!-- <label for="rem_small">Remaining Small:</label>
-            <input type="text" class="form-control" name="rem_small" id="rem_small" value="{{ $lot->rem_small }}">
-            <label for="rem_med">Remaining Medium:</label>
-            <input type="text" class="form-control" name="rem_med" id="rem_med" value="{{ $lot->rem_med }}">
-            <label for="rem_lrg">Remaining Large:</label>
-            <input type="text" class="form-control" name="rem_lrg" id="rem_lrg" value="{{ $lot->rem_lrg }}">
-            <label for="rem_super">Remaining Super:</label>
-            <input type="text" class="form-control" name="rem_super" id="rem_super" value="{{ $lot->rem_super }}">
-             --><label for="total_small">Revenue Small:</label>
+            <label for="total_small">Revenue Small:</label>
             <input type="text" class="form-control" name="total_small" id="total_small" value="{{ $lot->total_small }}">
             <label for="total_med">Revenue Medium:</label>
             <input type="text" class="form-control" name="total_med" id="total_med" value="{{ $lot->total_med }}">

@@ -2,6 +2,10 @@
 
 Route::get('/', function () { return view('welcome'); });
 
+// ------- Enter --------
+Route::get('/api/v1/enter', function () { return view('enter'); });
+Route::get('/api/v1/enter/lot_id+car_id', 'LotController@enter');
+
 // ------- Users --------
 Route::get('/api/v1/users', 'UserController@get');
 Route::get('/api/v1/user', function () { return view('user.id'); });
@@ -45,6 +49,10 @@ Route::get('/api/v1/carsBySize/', 'CarController@getBySize');
 
 Route::get('/api/v1/postCar', function () { return view('car.create'); });
 Route::post('/api/v1/car/all', 'CarController@create');
+
+Route::get('/api/v1/pCar', function () { return view('car.getToPut'); });
+Route::get('/api/v1/pCar/car_id', 'CarController@getByIdToPost');
+Route::patch('/api/v1/pCar/{car}', 'CarController@update');
 
 Route::get('/api/v1/delCar', function () { return view('car.delete'); });
 Route::get('/api/v1/car/all', 'CarController@delete');
