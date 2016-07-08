@@ -5,6 +5,8 @@ Route::get('/', function () { return view('welcome'); });
 // ------- Enter --------
 Route::get('/api/v1/enter', function () { return view('enter'); });
 Route::get('/api/v1/enter/lot_id+car_id', 'LotController@enter');
+Route::get('/api/v1/leave', function () { return view('leave'); });
+Route::get('/api/v1/leave/lot_id+loc', 'LotController@leave');
 
 // ------- Users --------
 Route::get('/api/v1/users', 'UserController@get');

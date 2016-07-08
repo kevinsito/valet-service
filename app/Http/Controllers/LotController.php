@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Lot;
 use App\Car;
+use App\User;
 
 define("SMALL", 0.1);
 define("MED", 0.45);
@@ -131,15 +132,19 @@ class LotController extends Controller
             switch ($size) {
                 case "small":
                     $remaining = $lot->rem_small;
+                    $lot->rem_small = $lot->rem_small - 1;
                     break;
                 case "medium":
                     $remaining = $lot->rem_med;
+                    $lot->rem_med = $lot->rem_med - 1;
                     break;
                 case "large":
                     $remaining = $lot->rem_lrg;
+                    $lot->rem_lrg = $lot->rem_lrg - 1;
                     break;
                 case "super":
                     $remaining = $lot->rem_super;
+                    $lot->rem_super = $lot->rem_super - 1;
                     break;
                 default:
                     $remaining = 0;
@@ -147,7 +152,10 @@ class LotController extends Controller
 
             if($remaining > 0) {
                 $car->location = "AA";
+                $car->duration = 0;
+                $car->charge = 0;
                 $car->save();
+                $lot->save();
 
                 return response()->json([
                     'location' => $car->location,
@@ -164,6 +172,82 @@ class LotController extends Controller
         else {
             return response()->json([
                     'error' => ['message' => 'No lot or car found with specified Id'],
+                    'status_code' => 400
+                ]);
+        }
+    }
+
+    public function leave() {
+        $l_id = $_GET["lot_id"];
+        $loc = $_GET["location"];
+
+        $car = Car::where(['lot_id' => $l_id, 'location' => $loc])->get()->all();
+        $lot = Lot::find($l_id);
+
+        if(!empty($car) && !empty($lot)) {
+            $car = $car[0];
+
+            $user = User::find($car->user_id);
+            
+            $duration = (time() - strtotime($car->updated_at))/60;
+            $car->duration = round($duration);
+
+            $charge = floor($duration/30) * 2;
+            if(($duration%30) > 0) {
+                $charge += 2;
+            }
+
+            if($charge > 15) {
+                $charge = 15;
+            }
+            $car->charge = $charge;
+            $car->location = "NA";
+
+            $user->times_parked += 1;
+            $user->total_duration += round($duration);
+            $user->avg_duration = $user->total_duration / $user->times_parked;
+            $user->total_charged += $charge;
+            
+            $size = $car->size;
+            switch ($size) {
+                case "small":
+                    $lot->rem_small = $lot->rem_small + 1;
+                    $lot->total_small = $lot->total_small + $charge;
+                    break;
+                case "medium":
+                    $lot->rem_med = $lot->rem_med + 1;
+                    $lot->total_med = $lot->total_med + $charge;
+                    break;
+                case "large":
+                    $lot->rem_lrg = $lot->rem_lrg + 1;
+                    $lot->total_lrg = $lot->total_lrg + $charge;
+                    break;
+                case "super":
+                    $lot->rem_super = $lot->rem_super + 1;
+                    $lot->total_super = $lot->total_super + $charge;
+                    break;
+                default:
+                    return response()->json([
+                        'error' => ['message' => 'No car found with specified size'],
+                        'status_code' => 200
+                    ]);
+                    break;
+            }
+
+            $lot->total = $lot->total + $charge;
+
+            $car->save();
+            $user->save();
+            $lot->save();
+
+            return response()->json([
+                    'message' => 'Thank you for using the Valet Service!',
+                    'status_code' => 200
+                ]);
+        }
+        else {
+            return response()->json([
+                    'error' => ['message' => 'No car found with specified Id'],
                     'status_code' => 400
                 ]);
         }

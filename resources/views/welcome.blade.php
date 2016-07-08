@@ -6,6 +6,7 @@
         <div>
             <h3> VALET: </h3>
             <a href="/api/v1/enter" class="list-group-item"> /api/v1/enter </a>
+            <a href="/api/v1/leave" class="list-group-item"> /api/v1/leave </a>
         </div>
         <div>
             <h3> GET: </h3>
