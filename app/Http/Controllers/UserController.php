@@ -8,7 +8,8 @@ use App\Http\Requests;
 use App\User;
 
 class UserController extends Controller
-{
+{   
+    // Get methods
     public function get() {
     	$users = User::all();
 
@@ -51,6 +52,7 @@ class UserController extends Controller
 		}
     }
 
+    // Create a user
     public function create() {
     	$req = request()->all();
     	
@@ -69,6 +71,7 @@ class UserController extends Controller
     	return redirect()->action('UserController@get');
     }
 
+    // Delete a user
     public function delete() {
     	$u_id = $_GET["user_id"];
     	$user = User::find($u_id);
@@ -89,6 +92,7 @@ class UserController extends Controller
 		}
     }
 
+    // Update a user
     public function update(User $user) {
     	$req = request()->all();
 

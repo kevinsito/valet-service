@@ -11,6 +11,7 @@ use App\User;
 
 class CarController extends Controller
 {
+	// Get methods
 	public function get() {
     	$cars = Car::all();
 
@@ -121,6 +122,7 @@ class CarController extends Controller
 		}
     }
 
+    // Create a car
     public function create() {
     	$req = request()->all();
     	
@@ -130,7 +132,7 @@ class CarController extends Controller
     		'size' => $req['size'],
     		'name' => $req['name'],
     		'colour' => $req['colour'],
-    		'location' => $req['location'],
+    		'location' => "NA",
     		'duration' => 0,
     		'charge' => 0,
     		]);
@@ -139,6 +141,7 @@ class CarController extends Controller
     	return redirect()->action('CarController@get');
     }
 
+    // Delete a car
     public function delete() {
     	$c_id = $_GET["car_id"];
     	$car = Car::find($c_id);
@@ -159,6 +162,7 @@ class CarController extends Controller
 		}
     }
 
+    // Update a car
     public function update(Car $car) {
     	$req = request()->all();
 

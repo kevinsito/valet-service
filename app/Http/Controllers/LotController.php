@@ -18,6 +18,7 @@ define("SUPER", 0.1);
 
 class LotController extends Controller
 {
+    // Get methods
     public function get() {
     	$lots = Lot::all();
 
@@ -60,6 +61,7 @@ class LotController extends Controller
 		}
     }
 
+    // Create a lot
     public function create() {
     	$req = request()->all();
     	$total_spots = $req['total_spots'];
@@ -78,6 +80,8 @@ class LotController extends Controller
     		]);
     	$lot->save();
 
+        // TODO: Use this array to check whether the spot has been taken or not
+        // This would not allow for a space to be generated twice (ie. a space is full)
         $spaceArr = array(['small', 'med', 'lrg', 'super]']);
 
         $spaces = array();
@@ -109,6 +113,7 @@ class LotController extends Controller
     	return redirect()->action('LotController@get');
     }
 
+    // Delete a lot
     public function delete() {
     	$l_id = $_GET["lot_id"];
     	$lot = Lot::find($l_id);
@@ -129,6 +134,7 @@ class LotController extends Controller
 		}
     }
 
+    // Update a lot
     public function update(Lot $lot) {
     	$req = request()->all();
     	$total_spots = $req['total_spots'];
@@ -149,6 +155,7 @@ class LotController extends Controller
     	return redirect()->action('LotController@get');
     }
 
+    // Method used to assign a parking spot for a car at a given lot
     public function enter() {
         $l_id = $_GET["lot_id"];
         $c_id = $_GET["car_id"];
@@ -159,6 +166,7 @@ class LotController extends Controller
         if(!empty($lot) && !empty($car)) {
             $size = $car->size;
 
+            // We decrease the available spaces each time a car can be parked
             switch ($size) {
                 case "small":
                     $remaining = $lot->rem_small;
@@ -180,6 +188,7 @@ class LotController extends Controller
                     $remaining = 0;
             }
 
+            // we set the location, duration, and charge intially to its values
             if($remaining > 0) {
                 $car->location = $this->freeLocation($lot->id, $car->size);
                 $car->duration = 0;
@@ -187,6 +196,7 @@ class LotController extends Controller
                 $car->save();
                 $lot->save();
 
+                // we return the location to park
                 return response()->json([
                     'location' => $car->location,
                     'status_code' => 200
@@ -207,6 +217,7 @@ class LotController extends Controller
         }
     }
 
+    // Method used to conduct payments are reset available spaces by lot and location
     public function leave() {
         $l_id = $_GET["lot_id"];
         $loc = $_GET["location"];
@@ -219,25 +230,32 @@ class LotController extends Controller
 
             $user = User::find($car->user_id);
             
+            // calculations for the duration by the most recently updated value on record
             $duration = (time() - strtotime($car->updated_at))/60;
             $car->duration = round($duration);
 
+            // the charge is calculated at $2 every start of the hour
             $charge = floor($duration/30) * 2;
             if(($duration%30) > 0) {
                 $charge += 2;
             }
 
+            // maximum charge of $15 if the calculations are more
             if($charge > 15) {
                 $charge = 15;
             }
             $car->charge = $charge;
+
+            // reset the location to the default value of 'NA'
             $car->location = "NA";
 
+            // we also record the updated data for the user of the car
             $user->times_parked += 1;
             $user->total_duration += round($duration);
             $user->avg_duration = $user->total_duration / $user->times_parked;
             $user->total_charged += $charge;
             
+            // we adjust the remaining spaces by the size of the car
             $size = $car->size;
             switch ($size) {
                 case "small":
@@ -264,6 +282,7 @@ class LotController extends Controller
                     break;
             }
 
+            // record the lot's total revenue at each departure
             $lot->total = $lot->total + $charge;
 
             $car->save();
@@ -283,6 +302,7 @@ class LotController extends Controller
         }
     }
 
+    // Method used to find a free parking spot
     public function freeLocation($lId, $size) {
         $lot = Lot::find($lId);
 

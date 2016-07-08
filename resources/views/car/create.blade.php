@@ -16,12 +16,6 @@
             <input type="text" class="form-control" name="name" id="name">
             <label for="colour">Colour:</label>
             <input type="text" class="form-control" name="colour" id="colour">
-            <label for="location">Location:</label>
-            <input type="text" class="form-control" name="location" id="location">
-            <label for="duration">Duration:</label>
-            <input type="text" class="form-control" name="duration" id="duration">
-            <label for="charge">Charge:</label>
-            <input type="text" class="form-control" name="charge" id="charge">
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
