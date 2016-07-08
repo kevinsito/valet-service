@@ -14,6 +14,8 @@ define("MED", 0.45);
 define("LRG", 0.35);
 define("SUPER", 0.1);
 
+//$lotList = array();
+
 class LotController extends Controller
 {
     public function get() {
@@ -75,6 +77,34 @@ class LotController extends Controller
     		'total' => 0,
     		]);
     	$lot->save();
+
+        $spaceArr = array(['small', 'med', 'lrg', 'super]']);
+
+        $spaces = array();
+        for($i = 0; $i < $lot->rem_small; $i++) {
+            $spaces[$i] = true;
+        }
+        $spaceArr['small'] = $spaces;
+
+        $spaces = array();
+        for($i = 0; $i < $lot->rem_med; $i++) {
+            $spaces[$i] = true;
+        }
+        $spaceArr['med'] = $spaces;
+
+        $spaces = array();
+        for($i = 0; $i < $lot->rem_lrg; $i++) {
+            $spaces[$i] = true;
+        }
+        $spaceArr['lrg'] = $spaces;
+
+        $spaces = array();
+        for($i = 0; $i < $lot->rem_super; $i++) {
+            $spaces[$i] = true;
+        }
+        $spaceArr['super'] = $spaces;
+
+        // $lotList[$lot->id] = $spaceArr;
     	
     	return redirect()->action('LotController@get');
     }
@@ -151,7 +181,7 @@ class LotController extends Controller
             }
 
             if($remaining > 0) {
-                $car->location = "AA";
+                $car->location = $this->freeLocation($lot->id, $car->size);
                 $car->duration = 0;
                 $car->charge = 0;
                 $car->save();
@@ -251,5 +281,32 @@ class LotController extends Controller
                     'status_code' => 400
                 ]);
         }
+    }
+
+    public function freeLocation($lId, $size) {
+        $lot = Lot::find($lId);
+
+        switch ($size) {
+            case "small":
+                $spot = rand(1, $lot->rem_small);
+                $loc = "S" . $spot;
+                break;
+            case "medium":
+                $spot = rand(1, $lot->rem_med);
+                $loc = "M"  . $spot;
+                break;
+            case "large":
+                $spot = rand(1, $lot->rem_lrg);
+                $loc =  "L"  . $spot;
+                break;
+            case "super":
+                $spot = rand(1, $lot->rem_super);
+                $loc = "Su"  . $spot;
+                break;
+            default:
+                $loc = "AA";
+        }
+
+        return $loc;
     }
 }
